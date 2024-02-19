@@ -1,73 +1,108 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"net/http"
-	"strings"
+    "database/sql"
+    "fmt"
+    "net/http"
+    "strconv"
+    "strings"
+    "github.com/joho/godotenv"
+    "os"
 
-	"github.com/ShiraazMoollatjie/goluhn"
+    "github.com/ShiraazMoollatjie/goluhn"
+    _ "github.com/lib/pq"
 )
 
-func main() {
-	http.HandleFunc("/", serveIndex)
-	http.HandleFunc("/charge", handleCharge)
+var db *sql.DB
 
-	fmt.Println("Fake Payment Gateway is running on port 8080...")
-	http.ListenAndServe(":8080", nil)
+func main() {
+     // Load environment variables from .env file
+     if err := godotenv.Load(); err != nil {
+        fmt.Println("Error loading .env file:", err)
+        return
+    }
+
+    // Retrieve database connection details from environment variables
+    dbUser := os.Getenv("DB_USER")
+    dbPassword := os.Getenv("DB_PASSWORD")
+    dbHost := os.Getenv("DB_HOST")
+    dbName := os.Getenv("DB_NAME")
+
+    // Construct the database connection string
+    dbURI := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=require", dbUser, dbPassword, dbHost, dbName)
+
+    // Establish a connection to the PostgreSQL database
+    var err error
+    db, err = sql.Open("postgres", dbURI)
+    if err != nil {
+        fmt.Println("Error connecting to database:", err)
+        return
+    }
+    defer db.Close()
+
+    // Print a success message if the connection is successful
+    fmt.Println("Connected to database successfully")
+
+    http.HandleFunc("/", serveIndex)
+    http.HandleFunc("/payment_form", handlePaymentInfoForm)
+
+    fmt.Println("Fake Payment Gateway is running on port 8080...")
+    http.ListenAndServe(":8080", nil)
 }
 
 func serveIndex(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "index.html")
+    http.ServeFile(w, r, "index.html")
 }
 
-func handleCharge(w http.ResponseWriter, r *http.Request) {
-	// Parse form data
-	err := r.ParseForm()
-	if err != nil {
-		http.Error(w, "Failed to parse form data", http.StatusInternalServerError)
-		return
-	}
+func handlePaymentInfoForm(w http.ResponseWriter, r *http.Request) {
+    if r.Method != http.MethodPost {
+        http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+        return
+    }
 
-	// Extract credit card number from form
-	cardNumber := strings.TrimSpace(r.Form.Get("card_number"))
+    // Parse form data
+    err := r.ParseForm()
+    if err != nil {
+        fmt.Println("Failed to parse form data:", err)
+        http.Error(w, "Failed to parse form data", http.StatusInternalServerError)
+        return
+    }
 
-	// Validate credit card number using goluhn package
-	if err := goluhn.Validate(cardNumber); err != nil {
-		fmt.Println("Credit card number is invalid:", err)
-		http.Error(w, "Invalid credit card number", http.StatusBadRequest)
-		return
-	}
+    // Extract form data
+    name := strings.TrimSpace(r.Form.Get("name"))
+    cardNumber := strings.TrimSpace(r.Form.Get("card_number"))
+    paymentAmountStr := strings.TrimSpace(r.Form.Get("payment_amount"))
+    currency := strings.TrimSpace(r.Form.Get("currency"))
 
-	// Simulate charging the customer
-	// You can customize this function to simulate different scenarios
-	fmt.Println("Charge successful for credit card number:", cardNumber)
-	fmt.Fprintf(w, "Charge successful for credit card number: %s\n", cardNumber)
-}
+    fmt.Println("Form data:")
+    fmt.Println("Name:", name)
+    fmt.Println("Card Number:", cardNumber)
+    fmt.Println("Payment Amount:", paymentAmountStr)
+    fmt.Println("Currency:", currency)
 
-func handleRefund(w http.ResponseWriter, r *http.Request) {
-	// Simulate refunding a payment
-	// You can customize this function to simulate different scenarios
-	response := map[string]string{"message": "Refund successful"}
-	jsonResponse(w, response)
-}
+    // Validate credit card number using Luhn algorithm
+    if err := goluhn.Validate(cardNumber); err != nil {
+        fmt.Println("Error validating credit card number:", err)
+        http.Error(w, "Error validating credit card number", http.StatusBadRequest)
+        return
+    }
 
-func handlePaymentInfo(w http.ResponseWriter, r *http.Request) {
-	// Simulate retrieving payment information
-	// You can customize this function to return mock payment data
-	response := map[string]interface{}{
-		"customer_id":    "123456",
-		"payment_amount": 50.00,
-		"currency":       "USD",
-	}
-	jsonResponse(w, response)
-}
+    // Convert payment amount to float64
+    paymentAmount, err := strconv.ParseFloat(paymentAmountStr, 64)
+    if err != nil {
+        fmt.Println("Invalid payment amount:", err)
+        http.Error(w, "Invalid payment amount", http.StatusBadRequest)
+        return
+    }
 
-func handleDefault(w http.ResponseWriter, r *http.Request) {
-	http.Error(w, "Not found", http.StatusNotFound)
-}
+    // Insert data into the database
+    _, err = db.Exec("INSERT INTO payment_info (name, payment_amount, currency, valid) VALUES ($1, $2, $3, $4)", name, paymentAmount, currency, true)
+    if err != nil {
+        fmt.Println("Failed to insert payment information into database:", err)
+        http.Error(w, "Failed to insert payment information into database", http.StatusInternalServerError)
+        return
+    }
 
-func jsonResponse(w http.ResponseWriter, data interface{}) {
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(data)
+    // Redirect to the payment information page or show a success message
+    http.Redirect(w, r, "/payment_success.html", http.StatusSeeOther)
 }

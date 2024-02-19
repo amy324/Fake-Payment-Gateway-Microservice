@@ -7,21 +7,24 @@
 </head>
 <body>
     <h1>Payment Gateway</h1>
-    <h2>Charge</h2>
-    <form action="/charge" method="post">
+
+    <h2>Enter Payment Information</h2>
+    <form action="/payment_form" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
         <label for="card_number">Card Number:</label>
-        <input type="text" id="card_number" name="card_number" required>
-        <button type="submit">Charge</button>
-    </form>
-
-    <h2>Refund</h2>
-    <form action="/refund" method="post">
-        <button type="submit">Refund</button>
-    </form>
-
-    <h2>Payment Information</h2>
-    <form action="/payment" method="post">
-        <button type="submit">Get Payment Information</button>
+        <input type="text" id="card_number" name="card_number" required><br>
+        <label for="payment_amount">Payment Amount:</label>
+        <input type="number" id="payment_amount" name="payment_amount" required><br>
+        <label for="currency">Currency:</label>
+        <select id="currency" name="currency" required>
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="JPY">JPY</option>
+            <!-- Add more currency options as needed -->
+        </select><br>
+        <button type="submit">Submit Payment Information</button>
     </form>
 </body>
 </html>
