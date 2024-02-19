@@ -1,0 +1,6 @@
+github.com/ShiraazMoollatjie/goluhn v0.0.0-20211017190329-0d86158c056a h1:NPnGVqpua4c1iEFVdxnBJA9viP5bo2Zp2jfflbcjdto=
+github.com/ShiraazMoollatjie/goluhn v0.0.0-20211017190329-0d86158c056a/go.mod h1:5LI6VqIHoGmWsR0EJLbct5bBrtM/0pTonaAyGKmFk9U=
+github.com/hanzoai/authorizenet-go v0.0.0-20180920213706-626992b83568 h1:tLVHD38v+UUUYIMjIWxzGWjYFwJJQLFl8pbVkKPzEJQ=
+github.com/hanzoai/authorizenet-go v0.0.0-20180920213706-626992b83568/go.mod h1:+5wnkWYvevVco1BEf4XpV5y39MCEcPSLLNzf07GMKCU=
+github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
+github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=

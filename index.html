@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway</title>
+</head>
+<body>
+    <h1>Payment Gateway</h1>
+    <h2>Charge</h2>
+    <form action="/charge" method="post">
+        <label for="card_number">Card Number:</label>
+        <input type="text" id="card_number" name="card_number" required>
+        <button type="submit">Charge</button>
+    </form>
+
+    <h2>Refund</h2>
+    <form action="/refund" method="post">
+        <button type="submit">Refund</button>
+    </form>
+
+    <h2>Payment Information</h2>
+    <form action="/payment" method="post">
+        <button type="submit">Get Payment Information</button>
+    </form>
+</body>
+</html>
