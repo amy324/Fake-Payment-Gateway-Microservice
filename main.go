@@ -9,9 +9,9 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/ShiraazMoollatjie/goluhn"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/ShiraazMoollatjie/goluhn"
 	_ "github.com/lib/pq"
 )
 
@@ -66,10 +66,20 @@ func main() {
 	// Create a new Gorilla Mux router
 	router := mux.NewRouter()
 
+	// Verifies if server is live for deployed version
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "The fake payment gateway microservice is live")
+	})
+
 	// Define routes
 	router.HandleFunc("/payment_form", handlePaymentInfoForm).Methods("POST")
 	router.HandleFunc("/get_invoice/{payment_id}", handleGetInvoice).Methods("GET")
 
+	// Define routes
+	router.HandleFunc("/payment_form", handlePaymentInfoForm).Methods("POST")
+	router.HandleFunc("/get_invoice/{payment_id}", handleGetInvoice).Methods("GET")
+
+	//Verifies if server is live for localhost version
 	log.Println("Fake Payment Gateway is running on port 8080...")
 	http.ListenAndServe(":8080", router)
 }
@@ -170,11 +180,11 @@ func handleGetInvoice(w http.ResponseWriter, r *http.Request) {
 
 	// Send a JSON response with the invoice details, including the payment amount in decimal format
 	response := map[string]interface{}{
-		"id":            invoiceDetails.ID,
-		"name":          invoiceDetails.Name,
+		"id":             invoiceDetails.ID,
+		"name":           invoiceDetails.Name,
 		"payment_amount": paymentAmount,
-		"currency":      invoiceDetails.Currency,
-		"valid":         invoiceDetails.Valid,
+		"currency":       invoiceDetails.Currency,
+		"valid":          invoiceDetails.Valid,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
