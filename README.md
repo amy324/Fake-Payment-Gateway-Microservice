@@ -6,6 +6,8 @@ This project serves as a demonstration of card validation through a simple payme
 
 As a backend engineer, I have written this project as a purely backend application designed to handle payment transactions. As such, it does not include a user interface. To interact with the Fake Payment Gateway, you can test its endpoints using tools like Postman or curl. Alternatively, you can create your own frontend application to integrate with the provided backend services.
 
+[Deployed Backend](https://payment-gateway-4gca.onrender.com/)]
+
 
 ## Table of Contents
 
@@ -101,7 +103,7 @@ The application uses a PostgreSQL database to store payment information securely
 
 
 ## Deployed App
-A deployed version of this fake payment gateway microservice is available at [[https://payment-gateway-4gca.onrender.com/](https://payment-gateway-4gca.onrender.com/)].Feel free to use it to test the API endpoints. You can verify if the service is live by visting the URL in your browser and seeing the text"The fake payment gateway microservice is live"
+A deployed version of this fake payment gateway microservice is available at [https://payment-gateway-4gca.onrender.com/](https://payment-gateway-4gca.onrender.com/)].Feel free to use it to test the API endpoints. You can verify if the service is live by visting the URL in your browser and seeing the text"The fake payment gateway microservice is live"
 
 Feel free to use this URL to test the API endpoints; To use the fake payment gateway, you can send HTTP POST requests to `/payment_form` with payment information in the request body. You can also retrieve invoice details by sending HTTP GET requests to `/get_invoice/{payment_id}` where `{payment_id}` is the ID of the payment. See more details on how to do this [below](#usage)
 
