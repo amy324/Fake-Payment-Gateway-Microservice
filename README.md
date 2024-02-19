@@ -6,7 +6,7 @@ This project serves as a demonstration of card validation through a simple payme
 
 As a backend engineer, I have written this project as a purely backend application designed to handle payment transactions. As such, it does not include a user interface. To interact with the Fake Payment Gateway, you can test its endpoints using tools like Postman or curl. Alternatively, you can create your own frontend application to integrate with the provided backend services.
 
-[Deployed Backend](https://payment-gateway-4gca.onrender.com/)]
+[Deployed Backend](https://payment-gateway-4gca.onrender.com/)
 
 
 ## Table of Contents
