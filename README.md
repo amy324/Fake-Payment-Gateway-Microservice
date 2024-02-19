@@ -22,7 +22,7 @@ As a backend engineer, I have written this project as a purely backend applicati
 
 The Fake Payment Gateway is designed to demonstrate how card validation works fundamentally without needing to sign up to third-party providers such as PayPal or Stripe to try writing this program yourself. It allows users to submit payment information, including name, card number, payment amount, and currency, via HTTP requests. The server validates the credit card number using the Luhn algorithm and inserts the payment information into a PostgreSQL database. Clients can also retrieve invoice details using the payment ID.
 
-Please note that this program is solely for demonstration purposes. If you plan on trying out this code yourself, it should be for learning purposes only and should never be used to genuinely accept payments. In real-life scenarios, integrating with established payment processors like PayPal or Stripe is recommended for secure and reliable payment processing.
+Please note that this program is solely for demonstration purposes. If you plan on trying out this code yourself, it should be for learning purposes only and should never be used to genuinely accept payments. In real-life scenarios, integrating with established payment processors like PayPal or Stripe is recommended for secure and reliable payment processing. You can also use third parties like Stripe or Paypal for testing and sandbox purposes with dummy data before attempting to implement any genuine payment processing solutions. As mentioned above, this program provides insight into payment gateway functionality without requiring integration  or registering with such services.
 
 
 
@@ -101,8 +101,10 @@ The application uses a PostgreSQL database to store payment information securely
 
 
 ## Deployed App
+A deployed version of this fake payment gateway microservice is available at [[https://payment-gateway-4gca.onrender.com/](https://payment-gateway-4gca.onrender.com/)].Feel free to use it to test the API endpoints. You can verify if the service is live by visting the URL in your browser and seeing the text"The fake payment gateway microservice is live"
 
-To use the fake payment gateway, you can send HTTP POST requests to `/payment_form` with payment information in the request body. You can also retrieve invoice details by sending HTTP GET requests to `/get_invoice/{payment_id}` where `{payment_id}` is the ID of the payment.
+Feel free to use this URL to test the API endpoints; To use the fake payment gateway, you can send HTTP POST requests to `/payment_form` with payment information in the request body. You can also retrieve invoice details by sending HTTP GET requests to `/get_invoice/{payment_id}` where `{payment_id}` is the ID of the payment. See more details on how to do this [below](#usage)
+
 
 
 ### Note:
@@ -126,7 +128,6 @@ Invalid Card Numbers:
 
 
 
-A deployed version of this fake payment gateway microservice is available at [https://payment-gateway-4gca.onrender.com/payment_form](https://payment-gateway-4gca.onrender.com/payment_form). Feel free to use it to test the API endpoints.
 
 ## Usage
 
@@ -203,7 +204,7 @@ Contributions to this project are welcome! To contribute, follow these steps:
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the MIT License
 
 ---
 
